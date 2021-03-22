@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 10:37:31 by javrodri          #+#    #+#             */
-/*   Updated: 2021/03/22 13:33:21 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/03/22 14:03:15 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <sys/types.h>
@@ -21,12 +21,18 @@
 
 static int arg = 10;
 
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
 void *thread_routine(void *unused)
 {
 	for(int i = 0; i < 10000; i++)
 	{
 //	  printf("0-[%i]\n", arg);
-	  arg++;
+//
+
+		pthread_mutex_lock(&mutex);
+		arg++;
+		pthread_mutex_unlock(&mutex);   
 	}
 	// int i = 0;
 	// int nr_lines = *((int*)arg);
@@ -49,8 +55,11 @@ void *thread_routine1(void *unused)
 	for(int i = 0; i < 10000; i++)
 	
 	{	
+	    pthread_mutex_lock(&mutex);
   		arg--;
 //		printf("1-[%i]\n", arg);
+		pthread_mutex_unlock(&mutex); 
+
 	}
 	
 	// int i = 0;
