@@ -1,5 +1,7 @@
 # philosophers
 
+[![jaeskim's 42Project Score](https://badge42.herokuapp.com/api/project/javrodri/philosophers)](https://github.com/JaeSeoKim/badge42)
+
 ## Conditions
 * n philosophers sitting at a round table doing one of three things
 	* Eating,
