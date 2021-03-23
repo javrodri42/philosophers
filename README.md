@@ -1,6 +1,6 @@
 # philosophers
 
-##Conditions
+## Conditions
 * n philosophers sitting at a round table doing one of three things
 	* Eating,
 	* Thinking,
