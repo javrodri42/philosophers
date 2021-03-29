@@ -6,7 +6,7 @@
 /*   By: javrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:51 by javrodri          #+#    #+#             */
-/*   Updated: 2021/03/23 13:43:08 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/03/29 12:11:30 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,3 +24,9 @@ typedef struct s_philo
 	int	position;
 	int	eating;
 }		t_philo;
+
+int		main(int argc, char **argv);
+void	error(char *error);
+int		ft_strlen(char *str);
+
+#endif

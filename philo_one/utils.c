@@ -6,7 +6,7 @@
 /*   By: javrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 11:13:17 by javrodri          #+#    #+#             */
-/*   Updated: 2021/03/24 11:30:33 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/03/29 12:55:01 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,16 @@ int	ft_atoi(const char *str)
 	}
 	if ((int)is_negative)
 	  return(-nb);
-	return (nb));
+	return (nb);
 }
 
-int main(void)
+int	ft_strlen(char *str)
 {
-	char a[] = "156"
-	printf("[%d]\n", ft_atoi(a));
+  int i;
+
+  i = 0;
+  while(str[i] != '\0')
+	i++;
+  return(i);
+}
+

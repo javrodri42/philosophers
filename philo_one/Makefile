@@ -6,13 +6,14 @@
 #    By: javrodri <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/23 10:31:51 by javrodri          #+#    #+#              #
-#    Updated: 2021/03/23 10:57:20 by javrodri         ###   ########.fr        #
+#    Updated: 2021/03/29 12:08:25 by javrodri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	philo_one	
 
-SRCS	=	philo_one.c
+SRCS	=	philo_one.c \
+			utils.c
 
 
 OBJS	=	$(SRCS:.c=.o)
