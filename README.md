@@ -41,3 +41,10 @@ __philosopher with thread and mutex__
 * One fork between each philosopher, therefore there will be a fork at the right and at the left of each philosopher.
 * To avoid philosophers duplicating forks, you should protect the forks state with a mutex for each of them.
 * Each philosopher should be a thread.
+
+## Ressources
+
+* [Parallel Computing](https://computing.llnl.gov/tutorials/parallel_comp/)
+* [POSIX Threads](https://computing.llnl.gov/tutorials/pthreads/) ([pthread routines](https://computing.llnl.gov/tutorials/pthreads/#AppendixA))
+* [Working example](https://timmurphy.org/2010/05/04/pthreads-in-c-a-minimal-working-example/)
+* [French tutorial](https://franckh.developpez.com/tutoriels/posix/pthreads/)
