@@ -6,7 +6,7 @@
 /*   By: javrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:51 by javrodri          #+#    #+#             */
-/*   Updated: 2021/03/31 14:32:24 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/05 14:40:33 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,28 +25,34 @@ typedef struct s_philo
 	int				eating;
 	uint64_t		limit;
 	uint64_t		last_eat;
-	int				l_fork;
-	int				r_fork;
+	pthread_mutex_t	mutex;
+	pthread_mutex_t	eat_mutex;
+	int				left_fork;
+	int				right_fork;
 	int				eat_count;
 	struct s_state	*state
 }		t_philo;
 
-typedef struct t_state
+typedef struct s_state
 {
 	int				amount;
 	uint64_t		time_to_die;
 	uint64_t		time_to_eat;
-	uint64_t		tiem_to_sleep;
+	uint64_t		time_to_sleep;
 	int				must_eat_count;
 	t_philo			*philos;
 	uint64_t		start;
-	pthread_mutex_t	*forks_m;
-	pthread_mutex_t	write_m;
-	pthread_mutex_t	somebody_dead_m;
+	pthread_mutex_t	*forks_mutex;
+	pthread_mutex_t	write_mutex;
+	pthread_mutex_t	somebody_dead_mutex;
 }					t_state;
 
 int		main(int argc, char **argv);
 int		error(char *error);
 int		ft_strlen(char *str);
+int		ft_atoi(const char *str);
+int		parse_arguments(int argc, char **argv, t_state *state);
+void	philos_initialize(t_state *state);
+int		free_state(t_state *state);
 
 #endif
