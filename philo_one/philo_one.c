@@ -6,7 +6,7 @@
 /*   By: javrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 12:45:05 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/05 14:40:37 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/05 18:31:09 by javier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,22 @@ void	philos_initialize(t_state *state)
 	}
 }
 
+int	initialize_mutex(t_state *state)
+{
+	int i;
+
+	pthread_mutex_init(&state->write_mutex, NULL);
+	pthread_mutex_init(&state->somebody_dead_mutex, NULL);
+	pthread_mutex_lock(&state->somebody_deade_mutex);
+	state->forks_mutex = (pthread_mutex_t*)malloc(sizeof(*(state->forks_mutex) * state->amount);
+	if (!state->forks_mutex)
+		return (1);
+	i = 0;
+	while (i < state->amount)
+		pthread_mutex_init(&state->forks_mutex[i++], NULL);
+	return (0);
+}
+
 int parse_arguments(int argc, char **argv, t_state *state)
 {
 	int i;
@@ -83,6 +99,7 @@ int parse_arguments(int argc, char **argv, t_state *state)
 	if (!state->philos)
 		return (1);
 	philos_initialize(state);
+	return 
 
 }
 
@@ -90,7 +107,7 @@ int	main(int argc, char **argv)
 {
 	t_state	state;
 
-	if (parse_arguments(argc, **argv, state))
+	if (parse_arguments(argc, **argv, &state))
 	{
 		free_state(&state);
 		error("error: fatal\n");
