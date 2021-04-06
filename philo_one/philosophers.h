@@ -18,6 +18,7 @@
 # include <pthread.h>
 # include <sys/time.h>
 # include <stdio.h>
+# include <stdint.h>
 
 typedef struct s_philo
 {
@@ -57,5 +58,14 @@ int			free_state(t_state *state);
 int			initialize_threads(t_state *state);
 uint64_t	gettime(void);
 void		*dead_monitor(void *arg_philo);
+void 		*routine(void *arg_philo);
+void    	*count_monitor(void *arg_state);
+int			initialize_mutex(t_state *state);
+void    	take_forks(t_philo *philo);
+void    	leave_forks(t_philo *philo);
+void	    eat(t_philo *philo);
+int 		print(t_philo *philo, char *str, int n);
+
+
 
 #endif

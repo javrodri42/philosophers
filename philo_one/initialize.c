@@ -58,7 +58,7 @@ int	initialize_threads(t_state *state)
     state->start = gettime();
     if (state->must_eat_count > 0)
     {
-        if (pthread_create(&thread_id, NULL, &monitor_count, (void*)state) != 0)
+        if (pthread_create(&thread_id, NULL, &count_monitor, (void*)state) != 0)
             return (1);
         pthread_detach(thread_id);
     }

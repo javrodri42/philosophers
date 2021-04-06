@@ -14,5 +14,10 @@
 
 int print(t_philo *philo, char *str, int n)
 {
-    
+    pthread_mutex_lock(&philo->state->write_mutex);
+    printf("%ju\t%i\t%s", gettime() - philo->state->start, philo->position + 1, str);
+    if (n == 1)
+        return (0);
+    pthread_mutex_unlock(&philo->state->write_mutex);
+    return (0);
 }

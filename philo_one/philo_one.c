@@ -46,9 +46,6 @@ int	free_state(t_state *state)
 
 int parse_arguments(int argc, char **argv, t_state *state)
 {
-	int i;
-
-	i = 0;
 	if (argc < 5 || argc > 6)
 		return(error("Error: bad arguments"));
 	state->amount = ft_atoi(argv[1]);
@@ -77,6 +74,9 @@ int	main(int argc, char **argv)
 		free_state(&state);
 		error("error: fatal\n");
 	}
+	pthread_mutex_lock(&state.somebody_dead_mutex);
+	pthread_mutex_unlock(&state.somebody_dead_mutex);
+	free_state(&state);
 	return (0);  
 }
 

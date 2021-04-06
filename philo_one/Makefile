@@ -15,7 +15,8 @@ NAME	=	philo_one
 SRCS	=	philo_one.c \
 			utils.c		\
 			initialize.c\
-			routine.c	
+			routine.c	\
+			routine2.c
 
 
 OBJS	=	$(SRCS:.c=.o)

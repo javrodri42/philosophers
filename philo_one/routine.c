@@ -30,3 +30,44 @@ void    *dead_monitor(void *arg_philo)
         usleep(1000);
     }
 }
+
+void    *count_monitor(void *arg_state)
+{
+    t_state *state;
+    int     i;
+    int     total;
+
+    state = (t_state*)arg_state;
+    total = 0;
+    while (total < state->must_eat_count)
+    {
+        i = 0;
+        while (i < state->amount)
+            pthread_mutex_lock(&state->philos[i++].eat_mutex);
+        total++;
+    }
+    print(&state->philos[0], "must eat count reached\n", 0);
+    pthread_mutex_unlock(&state->somebody_dead_mutex);
+    return((void*)0);
+}
+
+void *routine(void *arg_philo)
+{
+    t_philo     *philo;
+    pthread_t   thread_id;
+
+    philo = (t_philo*)arg_philo;
+    philo->last_eat = gettime();
+    philo->limit = philo->last_eat + philo->state->time_to_die;
+    if (pthread_create(&thread_id, NULL, &dead_monitor, arg_philo) != 0)
+        return ((void*)0);
+    pthread_detach(thread_id);
+    while (1)
+    {
+        take_forks(philo);
+        eat(philo);
+        leave_forks(philo);
+        print(philo, "is thinking\n", 0);
+    }
+    return ((void*)0);
+}
