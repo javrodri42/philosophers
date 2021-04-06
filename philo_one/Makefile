@@ -3,17 +3,19 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: javrodri <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/23 10:31:51 by javrodri          #+#    #+#              #
-#    Updated: 2021/03/29 12:08:25 by javrodri         ###   ########.fr        #
+#    Updated: 2021/04/06 11:46:03 by javrodri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	philo_one	
 
 SRCS	=	philo_one.c \
-			utils.c
+			utils.c		\
+			initialize.c\
+			routine.c	
 
 
 OBJS	=	$(SRCS:.c=.o)

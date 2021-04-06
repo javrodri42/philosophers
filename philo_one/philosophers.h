@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: javrodri <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:51 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/05 14:40:33 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/06 12:44:10 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef struct s_philo
 	int				left_fork;
 	int				right_fork;
 	int				eat_count;
-	struct s_state	*state
+	struct s_state	*state;
 }		t_philo;
 
 typedef struct s_state
@@ -47,12 +47,15 @@ typedef struct s_state
 	pthread_mutex_t	somebody_dead_mutex;
 }					t_state;
 
-int		main(int argc, char **argv);
-int		error(char *error);
-int		ft_strlen(char *str);
-int		ft_atoi(const char *str);
-int		parse_arguments(int argc, char **argv, t_state *state);
-void	philos_initialize(t_state *state);
-int		free_state(t_state *state);
+int			main(int argc, char **argv);
+int			error(char *error);
+int			ft_strlen(char *str);
+int			ft_atoi(const char *str);
+int			parse_arguments(int argc, char **argv, t_state *state);
+void		philos_initialize(t_state *state);
+int			free_state(t_state *state);
+int			initialize_threads(t_state *state);
+uint64_t	gettime(void);
+void		*dead_monitor(void *arg_philo);
 
 #endif

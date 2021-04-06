@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_one.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: javrodri <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 12:45:05 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/05 18:31:09 by javier           ###   ########.fr       */
+/*   Updated: 2021/04/06 10:28:58 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	error(char *error)
 {
   write(1, error, ft_strlen(error));
-  return(1);
+  return(0);
 }
 
 int	free_state(t_state *state)
@@ -44,42 +44,6 @@ int	free_state(t_state *state)
 	return(1);
 }
 
-void	philos_initialize(t_state *state)
-{
-	int i;
-
-	i = 0;
-	while (i < state->amount)
-	{
-		state->philos[i].position = i;
-		state->philos[i].eating = 0;
-		state->philos[i].eat_count = 0;
-		state->philos[i].left_fork = i;
-		state->philos[i].right_fork = (i + 1) % state->amount;
-		state->philos[i].state = state;
-		pthread_mutex_init(&state->philos[i].mutex, NULL);
-		pthread_mutex_init(&state->philos[i].eat_mutex, NULL);
-		pthread_mutex_lock(&state->philos[i].eat_mutex);
-		i++;
-	}
-}
-
-int	initialize_mutex(t_state *state)
-{
-	int i;
-
-	pthread_mutex_init(&state->write_mutex, NULL);
-	pthread_mutex_init(&state->somebody_dead_mutex, NULL);
-	pthread_mutex_lock(&state->somebody_deade_mutex);
-	state->forks_mutex = (pthread_mutex_t*)malloc(sizeof(*(state->forks_mutex) * state->amount);
-	if (!state->forks_mutex)
-		return (1);
-	i = 0;
-	while (i < state->amount)
-		pthread_mutex_init(&state->forks_mutex[i++], NULL);
-	return (0);
-}
-
 int parse_arguments(int argc, char **argv, t_state *state)
 {
 	int i;
@@ -99,15 +63,16 @@ int parse_arguments(int argc, char **argv, t_state *state)
 	if (!state->philos)
 		return (1);
 	philos_initialize(state);
-	return 
-
+	return (initialize_mutex(state));
 }
+
+
 
 int	main(int argc, char **argv)
 {
 	t_state	state;
 
-	if (parse_arguments(argc, **argv, &state))
+	if (parse_arguments(argc, argv, &state) && initialize_threads(&state))
 	{
 		free_state(&state);
 		error("error: fatal\n");

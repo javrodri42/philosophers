@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: javrodri <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 11:13:17 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/05 14:40:35 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/06 10:27:44 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "philosophers.h"
 
 #define MIN_INT -2147483648
 #define MAX_INT 2147483647
@@ -63,4 +65,10 @@ int	ft_strlen(char *str)
   return(i);
 }
 
+uint64_t    gettime(void)
+{
+    static struct timeval tv;
 
+    gettimeofday(&tv, NULL);
+    return ((tv.tv_sec * (uint64_t)1000) + (tv.tv_usec / 1000));
+}
