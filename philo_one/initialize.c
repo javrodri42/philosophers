@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 10:28:22 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/06 11:41:04 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/07 12:08:51 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	philos_initialize(t_state *state)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < state->amount)
@@ -34,12 +34,13 @@ void	philos_initialize(t_state *state)
 
 int	initialize_mutex(t_state *state)
 {
-	int i;
+	int	i;
 
 	pthread_mutex_init(&state->write_mutex, NULL);
 	pthread_mutex_init(&state->somebody_dead_mutex, NULL);
 	pthread_mutex_lock(&state->somebody_dead_mutex);
-	state->forks_mutex = (pthread_mutex_t*)malloc(sizeof(*(state->forks_mutex)) * state->amount);
+	state->forks_mutex = (pthread_mutex_t *)
+		malloc(sizeof(*(state->forks_mutex)) * state->amount);
 	if (!state->forks_mutex)
 		return (1);
 	i = 0;
@@ -50,26 +51,28 @@ int	initialize_mutex(t_state *state)
 
 int	initialize_threads(t_state *state)
 {
-	int i;
-    pthread_t thread_id;
-    void    *philo;
+	int			i;
+	pthread_t	thread_id;
+	void		*philo;
 
-    i = 0;
-    state->start = gettime();
-    if (state->must_eat_count > 0)
-    {
-        if (pthread_create(&thread_id, NULL, &count_monitor, (void*)state) != 0)
-            return (1);
-        pthread_detach(thread_id);
-    }
-    while (i < state->amount)
-    {
-        philo = (void*)(&state->philos[i]);
-        if (pthread_create(&thread_id, NULL, &routine, philo) != 0)
-            return (1);
-        pthread_detach(thread_id);
-        usleep(100);
-        i++;
-    }
-    return(0);
+	i = 0;
+	printf("-----aqui-----\n");
+	state->start = gettime();
+	if (state->must_eat_count > 0)
+	{
+		if (pthread_create(&thread_id, NULL,
+				&count_monitor, (void *)state) != 0)
+			return (1);
+		pthread_detach(thread_id);
+	}
+	while (i < state->amount)
+	{
+		philo = (void *)(&state->philos[i]);
+		if (pthread_create(&thread_id, NULL, &routine, philo) != 0)
+			return (1);
+		pthread_detach(thread_id);
+		usleep(100);
+		i++;
+	}
+	return (0);
 }

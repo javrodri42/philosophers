@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:51 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/06 12:44:10 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/07 11:14:00 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct s_state
 }					t_state;
 
 int			main(int argc, char **argv);
-int			error(char *error);
+int			error(char *error, t_state *state);
 int			ft_strlen(char *str);
 int			ft_atoi(const char *str);
 int			parse_arguments(int argc, char **argv, t_state *state);
@@ -58,14 +58,12 @@ int			free_state(t_state *state);
 int			initialize_threads(t_state *state);
 uint64_t	gettime(void);
 void		*dead_monitor(void *arg_philo);
-void 		*routine(void *arg_philo);
-void    	*count_monitor(void *arg_state);
+void		*routine(void *arg_philo);
+void		*count_monitor(void *arg_state);
 int			initialize_mutex(t_state *state);
-void    	take_forks(t_philo *philo);
-void    	leave_forks(t_philo *philo);
-void	    eat(t_philo *philo);
-int 		print(t_philo *philo, char *str, int n);
-
-
+void		take_forks(t_philo *philo);
+void		leave_forks(t_philo *philo);
+void		eat(t_philo *philo);
+int			printing(t_philo *philo, char *str, int n);
 
 #endif

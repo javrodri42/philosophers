@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 11:13:17 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/06 10:27:44 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/07 12:17:58 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,24 +51,24 @@ int	ft_atoi(const char *str)
 		++str;
 	}
 	if ((int)is_negative)
-	  return(-nb);
+		return (-nb);
 	return (nb);
 }
 
 int	ft_strlen(char *str)
 {
-  int i;
+	int	i;
 
-  i = 0;
-  while(str[i] != '\0')
-	i++;
-  return(i);
+	i = 0;
+	while (str[i] != '\0')
+		i++;
+	return (i);
 }
 
-uint64_t    gettime(void)
+uint64_t	gettime(void)
 {
-    static struct timeval tv;
+	static struct timeval	tv;
 
-    gettimeofday(&tv, NULL);
-    return ((tv.tv_sec * (uint64_t)1000) + (tv.tv_usec / 1000));
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * (uint64_t)1000) + (tv.tv_usec / 1000));
 }
