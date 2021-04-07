@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 11:46:09 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/07 11:42:32 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/07 13:23:39 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	*dead_monitor(void *arg_philo)
 		pthread_mutex_lock(&philo->mutex);
 		if (philo->eating == 0 && gettime() > philo->limit)
 		{
-			printing(philo, "\e[1;31mhas died\n", 1);
+			printing(philo, " died\n", 1);
 			pthread_mutex_unlock(&philo->mutex);
 			pthread_mutex_unlock(&philo->state->somebody_dead_mutex);
 		}
@@ -46,7 +46,7 @@ void	*count_monitor(void *arg_state)
 			pthread_mutex_lock(&state->philos[i++].eat_mutex);
 		total++;
 	}
-	printing(&state->philos[0], "\e[1;31mmust eat count reached\n", 1);
+	printing(&state->philos[0], " must eat count reached\n", 1);
 	pthread_mutex_unlock(&state->somebody_dead_mutex);
 	return ((void *)0);
 }
@@ -67,7 +67,7 @@ void	*routine(void *arg_philo)
 		take_forks(philo);
 		eat(philo);
 		leave_forks(philo);
-		printing(philo, "\e[1;34mis thinking\n", 0);
+		printing(philo, " is thinking\n", 0);
 	}
 	return ((void *)0);
 }

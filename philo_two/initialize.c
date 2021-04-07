@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 10:28:22 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/07 12:08:51 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/07 12:52:03 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ int	initialize_threads(t_state *state)
 	void		*philo;
 
 	i = 0;
-	printf("-----aqui-----\n");
 	state->start = gettime();
 	if (state->must_eat_count > 0)
 	{
