@@ -6,15 +6,16 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 10:28:22 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/07 12:52:03 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/08 14:06:30 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	philos_initialize(t_state *state)
+int	philos_initialize(t_state *state)
 {
-	int	i;
+	int		i;
+	char	semaphore[250];
 
 	i = 0;
 	while (i < state->amount)
@@ -25,27 +26,38 @@ void	philos_initialize(t_state *state)
 		state->philos[i].left_fork = i;
 		state->philos[i].right_fork = (i + 1) % state->amount;
 		state->philos[i].state = state;
-		pthread_mutex_init(&state->philos[i].mutex, NULL);
-		pthread_mutex_init(&state->philos[i].eat_mutex, NULL);
-		pthread_mutex_lock(&state->philos[i].eat_mutex);
+		semaphore_name("philoSEM", (char *)semaphore, i);
+		state->philos[i].mutex
+			= sem_open("semaphore", O_CREAT | O_EXCL, 0644, 1);
+		if (state->philos[i].mutex < 0)
+			return (1);
+		semaphore_name("philoEatSEM", (char *)semaphore, i);
+		state->philos[i].eat_count_mutex
+			= sem_open("semaphore", O_CREAT | O_EXCL, 0644, 0);
+		if (state->philos[i].mutex < 0)
+			return (1);
 		i++;
 	}
+	return (0);
 }
 
-int	initialize_mutex(t_state *state)
+int	initialize_semaphores(t_state *state)
 {
-	int	i;
-
-	pthread_mutex_init(&state->write_mutex, NULL);
-	pthread_mutex_init(&state->somebody_dead_mutex, NULL);
-	pthread_mutex_lock(&state->somebody_dead_mutex);
-	state->forks_mutex = (pthread_mutex_t *)
-		malloc(sizeof(*(state->forks_mutex)) * state->amount);
-	if (!state->forks_mutex)
+	sem_unlink("forkSEM");
+	state->forks_mutex
+		= sem_open("forkSEM", O_CREAT | O_EXCL, 0644, state->amount);
+	if (state->forks_mutex < 0)
 		return (1);
-	i = 0;
-	while (i < state->amount)
-		pthread_mutex_init(&state->forks_mutex[i++], NULL);
+	sem_unlink("writeSEM");
+	state->forks_mutex
+		= sem_open("writeSEM", O_CREAT | O_EXCL, 0644, state->amount);
+	if (state->forks_mutex < 0)
+		return (1);
+	sem_unlink("somedeadSEM");
+	state->forks_mutex
+		= sem_open("somedeadSEM", O_CREAT | O_EXCL, 0644, state->amount);
+	if (state->forks_mutex < 0)
+		return (1);
 	return (0);
 }
 
