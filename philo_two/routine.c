@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 11:46:09 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/08 14:15:25 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/12 14:41:47 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,10 @@ void	*dead_monitor(void *arg_philo)
 		if (philo->eating == 0 && gettime() > philo->limit)
 		{
 			printing(philo, " died\n", 1);
-			ptsem_post(philo->mutex);
-			ptsem_post(philo->state->somebody_dead_mutex);
+			sem_post(philo->mutex);
+			sem_post(philo->state->somebody_dead_mutex);
 		}
-		ptsem_post(philo->mutex);
-		usleep(1000);
+		sem_post(philo->mutex);
 	}
 }
 
@@ -44,11 +43,11 @@ void	*count_monitor(void *arg_state)
 		i = 0;
 		while (i < state->amount)
 			sem_wait(state->philos[i++].eat_count_mutex);
-			pthread_mutex_lock(&state->philos[i++].eat_mutex);
+			//pthread_mutex_lock(&state->philos[i++].eat_mutex);
 		total++;
 	}
 	printing(&state->philos[0], " must eat count reached\n", 1);
-	pthread_mutex_unlock(&state->somebody_dead_mutex);
+	sem_post(state->somebody_dead_mutex);
 	return ((void *)0);
 }
 
@@ -65,6 +64,7 @@ void	*routine(void *arg_philo)
 	pthread_detach(thread_id);
 	while (1)
 	{
+		printf("---aqui---\n");
 		take_forks(philo);
 		eat(philo);
 		leave_forks(philo);

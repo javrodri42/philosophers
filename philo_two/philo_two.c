@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_one.c                                        :+:      :+:    :+:   */
+/*   philo_two.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 12:45:05 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/07 12:20:12 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/12 14:21:59 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,27 +21,24 @@ int	error(char *error, t_state *state)
 
 int	free_state(t_state *state)
 {
-	int	i;
+	int		i;
+	char	semaphore[255];
 
-	if (state->forks_mutex)
-	{
-		i = 0;
-		while (i < state->amount)
-			pthread_mutex_destroy(&state->forks_mutex[i++]);
-		free(state->forks_mutex);
-	}
+	sem_unlink("sem_fork");
+	sem_unlink("sem_write");
+	sem_unlink("sem_dead");
 	if (state->philos)
 	{
 		i = 0;
 		while (i < state->amount)
 		{
-			pthread_mutex_destroy(&state->philos[i].mutex);
-			pthread_mutex_destroy(&state->philos[i++].eat_mutex);
+			semaphore_name("sem_philo", (char*) semaphore, i);
+			sem_unlink(semaphore);
+			semaphore_name("sem_philoeat", (char*) semaphore, i);
+			sem_unlink(semaphore);
 		}
 		free(state->philos);
 	}
-	pthread_mutex_destroy(&state->write_mutex);
-	pthread_mutex_destroy(&state->somebody_dead_mutex);
 	return (1);
 }
 
@@ -52,6 +49,10 @@ int	parse_arguments(int argc, char **argv, t_state *state)
 		printf("Error: bad arguments\n");
 		return (0);
 	}
+	/*if (state->amount < 2 || state->amount > 200 || state->time_to_die < 60
+		|| state->time_to_eat < 60 || state->time_to_sleep < 60
+		|| state->must_eat_count < 0)
+			return (0);*/
 	state->amount = ft_atoi(argv[1]);
 	state->time_to_die = ft_atoi(argv[2]);
 	state->time_to_eat = ft_atoi(argv[3]);
@@ -64,19 +65,16 @@ int	parse_arguments(int argc, char **argv, t_state *state)
 	if (!state->philos)
 		return (1);
 	philos_initialize(state);
-	return (initialize_mutex(state));
+	return (initialize_semaphores(state));
 }
 
 int	main(int argc, char **argv)
 {
 	t_state	state;
 
-	if (parse_arguments(argc, argv, &state))
-		error("error: fatal\n", &state);
-	if (initialize_threads(&state))
-		error("error: fatal\n", &state);
-	pthread_mutex_lock(&state.somebody_dead_mutex);
-	pthread_mutex_unlock(&state.somebody_dead_mutex);
+	parse_arguments(argc, argv, &state);
+	initialize_threads(&state);
+	sem_wait(state.somebody_dead_mutex);
 	free_state(&state);
 	return (0);
 }

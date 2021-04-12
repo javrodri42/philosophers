@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:51 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/08 13:57:09 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/12 14:08:26 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,12 @@ typedef struct s_philo
 	int				eating;
 	uint64_t		limit;
 	uint64_t		last_eat;
-	sem_t			mutex;
-	pthread_mutex_t	eat_mutex;
 	int				left_fork;
 	int				right_fork;
-	int				eat_count;
-	sem_t			*eat_count_mutex;
 	struct s_state	*state;
+	int				eat_count;
+	sem_t			*mutex;
+	sem_t			*eat_count_mutex;
 }		t_philo;
 
 typedef struct s_state
@@ -45,8 +44,8 @@ typedef struct s_state
 	uint64_t		time_to_eat;
 	uint64_t		time_to_sleep;
 	int				must_eat_count;
-	t_philo			*philos;
 	uint64_t		start;
+	t_philo			*philos;
 	sem_t			*forks_mutex;
 	sem_t			*write_mutex;
 	sem_t			*somebody_dead_mutex;
@@ -64,7 +63,7 @@ uint64_t	gettime(void);
 void		*dead_monitor(void *arg_philo);
 void		*routine(void *arg_philo);
 void		*count_monitor(void *arg_state);
-int			initialize_mutex(t_state *state);
+int			initialize_semaphores(t_state *state);
 void		take_forks(t_philo *philo);
 void		leave_forks(t_philo *philo);
 void		eat(t_philo *philo);
