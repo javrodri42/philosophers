@@ -14,7 +14,19 @@
 
 int	philos_initialize(t_state *state)
 {
-	int		i;
+	char sem_name[250];
+	int i;
+
+	i = 0;
+	sem_unlink("sem_fork");
+	sem_unlink("sem_write");
+	sem_unlink("sem_dead");
+
+	state->forks_mutex = sem_open("sem_fork", O_CREAT, 0644, state->amount);
+	state->write_mutex = sem_open("sem_write", O_CREAT, 0644, 0);
+	state->somebody_dead_mutex = sem_open("sem_fork", O_CREAT, 0644, 1);
+
+	/*int		i;
 	char	semaphore[250];
 
 	i = 0;
@@ -38,7 +50,7 @@ int	philos_initialize(t_state *state)
 			return (1);
 		i++;
 	}
-	return (0);
+	return (0);*/
 }
 
 int	initialize_semaphores(t_state *state)

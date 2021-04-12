@@ -20,6 +20,8 @@
 # include <stdio.h>
 # include <stdint.h>
 # include <semaphore.h>
+# include <sys/stat.h>
+# include <fcntl.h>
 
 typedef struct s_philo
 {
@@ -32,7 +34,7 @@ typedef struct s_philo
 	int				left_fork;
 	int				right_fork;
 	int				eat_count;
-	sem_t			eat_count_mutex;
+	sem_t			*eat_count_mutex;
 	struct s_state	*state;
 }		t_philo;
 
@@ -45,9 +47,9 @@ typedef struct s_state
 	int				must_eat_count;
 	t_philo			*philos;
 	uint64_t		start;
-	pthread_mutex_t	*forks_mutex;
-	pthread_mutex_t	write_mutex;
-	pthread_mutex_t	somebody_dead_mutex;
+	sem_t			*forks_mutex;
+	sem_t			*write_mutex;
+	sem_t			*somebody_dead_mutex;
 }					t_state;
 
 int			main(int argc, char **argv);

@@ -53,3 +53,6 @@ dkms.conf
 
 /glagan_philo
 /philosophers
+/dgarcia_philo
+*.swp
+*.swo

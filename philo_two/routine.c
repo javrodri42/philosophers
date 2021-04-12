@@ -19,14 +19,14 @@ void	*dead_monitor(void *arg_philo)
 	philo = (t_philo *)arg_philo;
 	while (1)
 	{
-		pthread_mutex_lock(&philo->mutex);
+		sem_wait(philo->mutex);
 		if (philo->eating == 0 && gettime() > philo->limit)
 		{
 			printing(philo, " died\n", 1);
-			pthread_mutex_unlock(&philo->mutex);
-			pthread_mutex_unlock(&philo->state->somebody_dead_mutex);
+			ptsem_post(philo->mutex);
+			ptsem_post(philo->state->somebody_dead_mutex);
 		}
-		pthread_mutex_unlock(&philo->mutex);
+		ptsem_post(philo->mutex);
 		usleep(1000);
 	}
 }
@@ -43,7 +43,7 @@ void	*count_monitor(void *arg_state)
 	{
 		i = 0;
 		while (i < state->amount)
-			sem_wait(state->philos[i++].eat_count_mutex)
+			sem_wait(state->philos[i++].eat_count_mutex);
 			pthread_mutex_lock(&state->philos[i++].eat_mutex);
 		total++;
 	}
