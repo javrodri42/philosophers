@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 11:46:09 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/12 14:41:47 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/13 14:31:05 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,19 @@ void	*count_monitor(void *arg_state)
 {
 	t_state	*state;
 	int		i;
-	int		total;
 
 	state = (t_state *)arg_state;
-	total = 0;
-	while (total < state->must_eat_count)
+	while (state->total_eat_count < state->must_eat_count)
 	{
 		i = 0;
 		while (i < state->amount)
-			sem_wait(state->philos[i++].eat_count_mutex);
-			//pthread_mutex_lock(&state->philos[i++].eat_mutex);
-		total++;
+		{
+			if (sem_wait(state->philos[i++].eat_count_mutex))
+				return ((void *)0);
+		}
+		state->total_eat_count++;
 	}
-	printing(&state->philos[0], " must eat count reached\n", 1);
+	printing(&state->philos[0], "\e[0;92;40m must eat count reached\e[0m\n", 1);
 	sem_post(state->somebody_dead_mutex);
 	return ((void *)0);
 }
@@ -64,7 +64,6 @@ void	*routine(void *arg_philo)
 	pthread_detach(thread_id);
 	while (1)
 	{
-		printf("---aqui---\n");
 		take_forks(philo);
 		eat(philo);
 		leave_forks(philo);
