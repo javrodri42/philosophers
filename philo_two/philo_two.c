@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 12:45:05 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/13 11:49:38 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/14 14:16:59 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ int	main(int argc, char **argv)
 
 	if (parse_arguments(argc, argv, &state))
 		return (0);
-	initialize_threads(&state);
+	if (initialize_threads(&state))
+		return (0);
 	sem_wait(state.somebody_dead_mutex);
 	free_state(&state);
 	return (0);

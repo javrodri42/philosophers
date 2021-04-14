@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 11:46:09 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/13 14:31:05 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/14 12:43:16 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	*dead_monitor(void *arg_philo)
 		}
 		sem_post(philo->mutex);
 	}
+	return ((void *)0);
 }
 
 void	*count_monitor(void *arg_state)
@@ -38,12 +39,11 @@ void	*count_monitor(void *arg_state)
 	state = (t_state *)arg_state;
 	while (state->total_eat_count < state->must_eat_count)
 	{
+		printf("total:%i\n", state->total_eat_count);
 		i = 0;
 		while (i < state->amount)
-		{
 			if (sem_wait(state->philos[i++].eat_count_mutex))
 				return ((void *)0);
-		}
 		state->total_eat_count++;
 	}
 	printing(&state->philos[0], "\e[0;92;40m must eat count reached\e[0m\n", 1);

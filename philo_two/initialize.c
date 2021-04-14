@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 10:28:22 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/13 13:59:03 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/14 14:26:23 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ int	initialize_semaphores(t_state *state)
 		return (1);
 	sem_unlink("sem_write");
 	state->write_mutex
-		= sem_open("sem_write", O_CREAT | O_EXCL, 0644, state->amount);
-	if (state->forks_mutex < 0)
+		= sem_open("sem_write", O_CREAT | O_EXCL, 0644, 1);
+	if (state->write_mutex < 0)
 		return (1);
 	sem_unlink("sem_dead");
 	state->somebody_dead_mutex
-		= sem_open("sem_dead", O_CREAT | O_EXCL, 0644, state->amount);
-	if (state->forks_mutex < 0)
+		= sem_open("sem_dead", O_CREAT | O_EXCL, 0644, 0);
+	if (state->somebody_dead_mutex < 0)
 		return (1);
 	return (0);
 }
@@ -68,6 +68,7 @@ int	initialize_threads(t_state *state)
 	state->start = gettime();
 	if (state->must_eat_count > 0)
 	{
+		printf("must:%i\n", state->must_eat_count);
 		if (pthread_create(&thread_id, NULL,
 				&count_monitor, (void *)state) != 0)
 			return (1);
