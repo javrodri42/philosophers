@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 10:28:22 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/14 14:26:23 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/15 12:11:23 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,15 @@ int	philos_initialize(t_state *state)
 	{
 		state->philos[i].position = i;
 		state->philos[i].eating = 0;
-		state->philos[i].left_fork = (i + 1) % state->amount;
-		state->philos[i].right_fork = i;
+		state->philos[i].right_fork = (i + 1) % state->amount;
+		state->philos[i].left_fork = i;
+		state->philos[i].eat_count = 0;
 		state->philos[i].state = state;
-		semaphore_name("sem_philo", (char *)semaphore, i);
+		semaphore_name("semphilo", (char *)semaphore, i);
 		sem_unlink(semaphore);
 		state->philos[i].mutex
 			= sem_open("semaphore", O_CREAT | O_EXCL, 0644, 1);
-		semaphore_name("sem_philoeat", (char *)semaphore, i);
+		semaphore_name("semphiloeat", (char *)semaphore, i);
 		sem_unlink(semaphore);
 		state->philos[i].eat_count_mutex
 			= sem_open("semaphore", O_CREAT | O_EXCL, 0644, 0);
@@ -40,19 +41,19 @@ int	philos_initialize(t_state *state)
 
 int	initialize_semaphores(t_state *state)
 {
-	sem_unlink("sem_fork");
+	sem_unlink("semfork");
 	state->forks_mutex
-		= sem_open("sem_fork", O_CREAT | O_EXCL, 0644, state->amount);
+		= sem_open("semfork", O_CREAT, 0644, state->amount);
 	if (state->forks_mutex < 0)
 		return (1);
-	sem_unlink("sem_write");
+	sem_unlink("semwrite");
 	state->write_mutex
-		= sem_open("sem_write", O_CREAT | O_EXCL, 0644, 1);
+		= sem_open("semwrite", O_CREAT, 0644, 1);
 	if (state->write_mutex < 0)
 		return (1);
-	sem_unlink("sem_dead");
+	sem_unlink("semdead");
 	state->somebody_dead_mutex
-		= sem_open("sem_dead", O_CREAT | O_EXCL, 0644, 0);
+		= sem_open("semdead", O_CREAT, 0644, 0);
 	if (state->somebody_dead_mutex < 0)
 		return (1);
 	return (0);
@@ -64,16 +65,15 @@ int	initialize_threads(t_state *state)
 	pthread_t	thread_id;
 	void		*philo;
 
-	i = 0;
-	state->start = gettime();
 	if (state->must_eat_count > 0)
 	{
-		printf("must:%i\n", state->must_eat_count);
 		if (pthread_create(&thread_id, NULL,
 				&count_monitor, (void *)state) != 0)
 			return (1);
 		pthread_detach(thread_id);
 	}
+	state->start = gettime();
+	i = 0;
 	while (i < state->amount)
 	{
 		philo = (void *)(&state->philos[i]);

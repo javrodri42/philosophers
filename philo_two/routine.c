@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 11:46:09 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/14 12:43:16 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/15 13:10:29 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,12 @@ void	*dead_monitor(void *arg_philo)
 		sem_wait(philo->mutex);
 		if (philo->eating == 0 && gettime() > philo->limit)
 		{
-			printing(philo, " died\n", 1);
-			sem_post(philo->mutex);
-			sem_post(philo->state->somebody_dead_mutex);
+			if (printing(philo, " died\n", 1))
+				return ((void *)0);
+			if (sem_post(philo->mutex))
+				return ((void *)0);
+			if (sem_post(philo->state->somebody_dead_mutex))
+				return ((void *)0);
 		}
 		sem_post(philo->mutex);
 	}
@@ -37,17 +40,20 @@ void	*count_monitor(void *arg_state)
 	int		i;
 
 	state = (t_state *)arg_state;
-	while (state->total_eat_count < state->must_eat_count)
+	while (state->total_eat_count < state->must_eat_count * state->amount)
 	{
-		printf("total:%i\n", state->total_eat_count);
 		i = 0;
-		while (i < state->amount)
-			if (sem_wait(state->philos[i++].eat_count_mutex))
-				return ((void *)0);
-		state->total_eat_count++;
+		if (state->total_eat_count == state->must_eat_count * state->amount)
+		{
+			//while (i < state->amount)
+				//sem_wait(state->philos[i++].eat_count_mutex);
+			sem_post(state->somebody_dead_mutex);
+			//usleep(1000);
+			printf("holahola\n");
+		}
 	}
 	printing(&state->philos[0], "\e[0;92;40m must eat count reached\e[0m\n", 1);
-	sem_post(state->somebody_dead_mutex);
+	printf("total:%i\n", state->total_eat_count);
 	return ((void *)0);
 }
 

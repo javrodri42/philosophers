@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 12:45:05 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/14 14:16:59 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/15 12:06:46 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,17 @@ int	free_state(t_state *state)
 	int		i;
 	char	semaphore[255];
 
-	sem_unlink("sem_fork");
-	sem_unlink("sem_write");
-	sem_unlink("sem_dead");
+	sem_unlink("semfork");
+	sem_unlink("semwrite");
+	sem_unlink("semdead");
 	if (state->philos)
 	{
 		i = 0;
 		while (i < state->amount)
 		{
-			semaphore_name("sem_philo", (char *) semaphore, i);
+			semaphore_name("semphilo", (char *) semaphore, i);
 			sem_unlink(semaphore);
-			semaphore_name("sem_philoeat", (char *) semaphore, i);
+			semaphore_name("semphiloeat", (char *) semaphore, i);
 			sem_unlink(semaphore);
 		}
 		free(state->philos);
