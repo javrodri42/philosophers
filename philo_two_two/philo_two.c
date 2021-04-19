@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 10:04:07 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/19 23:55:48 by javier           ###   ########.fr       */
+/*   Updated: 2021/04/19 23:59:44 by javier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,25 +34,25 @@ int	print(t_philo *philo, char* message)
 
 int	free_state(t_state *state)
 {
-  int	i;
-  char	semaphore[255];
+	int	i;
+	char	semaphore[255];
 
-  sem_unlink("semaphoreFork");
-  sem_unlink("semaphoreWrite");
-  sem_unlink("semaphoreDead");
-  if (state->philos)
-  {
-  	i = 0;
-	while (i < state->amount)
+	sem_unlink("semaphoreFork");
+	sem_unlink("semaphoreWrite");
+	sem_unlink("semaphoreDead");
+	if (state->philos)
 	{
-		semaphore_name("semaphorePhilo", (char *)semaphore, i);
-		sem_unlink(semaphore);
-		semaphore_name("semaphorePhiloeat", (char *)semaphore, i);
-		sem_unlink(semaphore);
+		i = 0;
+		while (i < state->amount)
+		{
+			semaphore_name("semaphorePhilo", (char *)semaphore, i);
+			sem_unlink(semaphore);
+			semaphore_name("semaphorePhiloeat", (char *)semaphore, i);
+			sem_unlink(semaphore);
+		}
+		free(state->philos);
 	}
-	free(state->philos);
-  }
-  return (1);
+	return (1);
 }
 int main(int argc, char **argv)
 {
