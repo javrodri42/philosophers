@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 09:12:06 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/07 13:00:19 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/20 13:13:39 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	eat(t_philo *philo)
 	philo->eating = 1;
 	philo->last_eat = gettime();
 	philo->limit = philo->last_eat + philo->state->time_to_die;
-	printing(philo, " is eating\n", 0);
+	printing(philo, " is eating 🍔\n", 0);
 	usleep(philo->state->time_to_eat * 1000);
 	philo->eat_count++;
 	philo->eating = 0;

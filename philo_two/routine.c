@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 12:57:12 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/20 12:57:15 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/20 13:16:12 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	*routine(void *philo_arg)
 {
 	t_philo		*philo;
 	pthread_t	id;
-	int			should_end;
+	int			aux;
 
 	philo = (t_philo *)philo_arg;
 	philo->last_eat = gettime();
@@ -74,10 +74,10 @@ void	*routine(void *philo_arg)
 	{
 		if (take_forks(philo))
 			return ((void *)0);
-		should_end = eat(philo);
+		aux = eat(philo);
 		if (leave_forks(philo))
 			return ((void *)0);
-		if (should_end)
+		if (aux)
 			return ((void *)0);
 		if (print(philo, "is thinking"))
 			return ((void *)0);
