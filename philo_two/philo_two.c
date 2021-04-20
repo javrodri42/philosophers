@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/23 12:45:05 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/15 12:06:46 by javrodri         ###   ########.fr       */
+/*   Created: 2021/04/19 10:04:07 by javrodri          #+#    #+#             */
+/*   Updated: 2021/04/20 12:55:58 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,43 @@ int	error(char *error, t_state *state)
 	return (1);
 }
 
+int	print(t_philo *philo, char *message)
+{
+	static int	done = 0;
+	int			ret;
+
+	if (sem_wait(philo->state->write_mutex) != 0)
+		return (1);
+	ret = 1;
+	if (!done)
+	{
+		printf("%llu\t%i %s\n", gettime() - philo->state->start,
+			philo->position + 1, message);
+		if (ft_strncmp(message, "has died", ft_strlen("has died")) == 0)
+			done = 1;
+		ret = 0;
+	}
+	if (sem_post(philo->state->write_mutex))
+		return (1);
+	return (ret);
+}
+
 int	free_state(t_state *state)
 {
 	int		i;
 	char	semaphore[255];
 
-	sem_unlink("semfork");
-	sem_unlink("semwrite");
-	sem_unlink("semdead");
+	sem_unlink("semaphoreFork");
+	sem_unlink("semaphoreWrite");
+	sem_unlink("semaphoreDead");
 	if (state->philos)
 	{
 		i = 0;
 		while (i < state->amount)
 		{
-			semaphore_name("semphilo", (char *) semaphore, i);
+			semaphore_name("semaphorePhilo", (char *)semaphore, i);
 			sem_unlink(semaphore);
-			semaphore_name("semphiloeat", (char *) semaphore, i);
+			semaphore_name("semaphorePhiloeat", (char *)semaphore, i++);
 			sem_unlink(semaphore);
 		}
 		free(state->philos);
@@ -42,38 +63,16 @@ int	free_state(t_state *state)
 	return (1);
 }
 
-int	parse_arguments(int argc, char **argv, t_state *state)
-{
-	if (argc < 5 || argc > 6)
-		return (error("Error: bad arguments -1\n", state));
-	state->amount = ft_atoi(argv[1]);
-	state->time_to_die = ft_atoi(argv[2]);
-	state->time_to_eat = ft_atoi(argv[3]);
-	state->time_to_sleep = ft_atoi(argv[4]);
-	state->total_eat_count = 0;
-	state->must_eat_count = 0;
-	if (state->amount < 2 || state->amount > 200
-		|| state->time_to_die < 60 || state->time_to_eat < 60
-		|| state->time_to_sleep < 60 || state->must_eat_count < 0)
-		return (error("Error: bad arguments -2\n", state));
-	if (argc == 6)
-		state->must_eat_count = ft_atoi(argv[5]);
-	state->forks_mutex = NULL;
-	state->philos = (t_philo *)malloc(sizeof(*(state->philos)) * state->amount);
-	if (!state->philos)
-		return (1);
-	philos_initialize(state);
-	return (initialize_semaphores(state));
-}
-
 int	main(int argc, char **argv)
 {
 	t_state	state;
 
-	if (parse_arguments(argc, argv, &state))
-		return (0);
-	if (initialize_threads(&state))
-		return (0);
+	if (argc < 5 || argc > 6)
+		return (error("ERROR: BAD ARGUMENTS", &state));
+	if (initialize(argc, argv, &state))
+		return (error("ERROR: FATAL", &state));
+	if (initialize_threads (&state))
+		return (error("ERROR: FATAL", &state));
 	sem_wait(state.somebody_dead_mutex);
 	free_state(&state);
 	return (0);

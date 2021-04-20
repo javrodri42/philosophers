@@ -1,24 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print.c                                            :+:      :+:    :+:   */
+/*   semaphore.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/06 13:01:13 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/15 11:47:07 by javrodri         ###   ########.fr       */
+/*   Created: 2021/04/19 13:05:24 by javrodri          #+#    #+#             */
+/*   Updated: 2021/04/20 12:58:19 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	printing(t_philo *philo, char *str, int n)
+sem_t	*open_semaphore(char const *name, int value)
 {
-	sem_wait(philo->state->write_mutex);
-	printf("%llu\t%i%s", gettime() - philo->state->start,
-		philo->position + 1, str);
-	if (n == 1)
-		return (0);
-	sem_post(philo->state->write_mutex);
-	return (0);
+	sem_unlink(name);
+	return (sem_open(name, O_CREAT | O_EXCL, 0644, value));
+}
+
+char	*semaphore_name(char const *src, char *dst, int pos)
+{
+	int	i;
+
+	i = ft_strcpy(dst, src);
+	while (pos > 0)
+	{
+		dst[i++] = (pos % 10) + '0';
+		pos /= 10;
+	}
+	dst[i] = 0;
+	return (dst);
 }

@@ -5,40 +5,61 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/07 09:12:06 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/15 11:44:11 by javrodri         ###   ########.fr       */
+/*   Created: 2021/04/20 12:56:51 by javrodri          #+#    #+#             */
+/*   Updated: 2021/04/20 12:59:26 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	take_forks(t_philo *philo)
+int	take_forks(t_philo *philo)
 {
-	sem_wait(philo->state->forks_mutex);
-	printing(philo, " has taken a fork\n", 0);
-	sem_wait(philo->state->forks_mutex);
-	printing(philo, " has taken a fork\n", 0);
+	if (sem_wait(philo->state->forks_mutex))
+		return (1);
+	if (print(philo, "take fork"))
+		return (1);
+	if (sem_wait(philo->state->forks_mutex))
+		return (1);
+	if (print(philo, "take fork"))
+		return (1);
+	return (0);
 }
 
-void	leave_forks(t_philo *philo)
+int	leave_forks(t_philo *philo)
 {
-	printing(philo, " is sleeping\n", 0);
-	sem_post(philo->state->forks_mutex);
-	sem_post(philo->state->forks_mutex);
-	usleep(philo->state->time_to_sleep);
+	if (print(philo, "sleep"))
+		return (1);
+	if (sem_post(philo->state->forks_mutex))
+		return (1);
+	if (sem_post(philo->state->forks_mutex))
+		return (1);
+	usleep (philo->state->time_to_sleep * 1000);
+	return (0);
 }
 
-void	eat(t_philo *philo)
+int	eat(t_philo *philo)
 {
-	sem_wait(philo->mutex);
+	if (sem_wait(philo->mutex) != 0)
+		return (1);
 	philo->eating = 1;
 	philo->last_eat = gettime();
 	philo->limit = philo->last_eat + philo->state->time_to_die;
-	printing(philo, " is eating 🍔\n", 0);
-	philo->state->total_eat_count++;
+	if (print(philo, "is eating 🍔"))
+		return (1);
 	usleep(philo->state->time_to_eat * 1000);
-	//philo->eat_count++;
+	philo->eat_count++;
 	philo->eating = 0;
-	sem_post(philo->mutex);
-	sem_post(philo->eat_count_mutex);
-}  
+	if (sem_post(philo->mutex))
+		return (1);
+	if (sem_post(philo->eat_count_mutex))
+		return (1);
+	return (0);
+}
+
+uint64_t	gettime(void)
+{
+	static struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * (uint64_t)1000) + (tv.tv_usec / 1000));
+}
