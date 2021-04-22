@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 11:46:09 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/07 13:23:39 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/22 11:44:59 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@ void	*dead_monitor(void *arg_philo)
 	while (1)
 	{
 		pthread_mutex_lock(&philo->mutex);
-		if (philo->eating == 0 && gettime() > philo->limit)
+		if (!philo->eating && gettime() > philo->limit)
 		{
 			printing(philo, " died\n", 1);
 			pthread_mutex_unlock(&philo->mutex);
 			pthread_mutex_unlock(&philo->state->somebody_dead_mutex);
+			return ((void *)0);
 		}
 		pthread_mutex_unlock(&philo->mutex);
 		usleep(1000);

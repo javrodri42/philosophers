@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 12:56:51 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/20 13:15:05 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/22 14:48:07 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ int	take_forks(t_philo *philo)
 
 int	leave_forks(t_philo *philo)
 {
+	if (sem_post(philo->state->forks_mutex))
+		return (1);
+	if (sem_post(philo->state->forks_mutex))
+		return (1);
 	if (print(philo, "sleep"))
-		return (1);
-	if (sem_post(philo->state->forks_mutex))
-		return (1);
-	if (sem_post(philo->state->forks_mutex))
 		return (1);
 	usleep (philo->state->time_to_sleep * 1000);
 	return (0);
@@ -41,11 +41,11 @@ int	eat(t_philo *philo)
 {
 	if (sem_wait(philo->mutex) != 0)
 		return (1);
+	if (print(philo, "is eating 🍔"))
+		return (1);
 	philo->eating = 1;
 	philo->last_eat = gettime();
 	philo->limit = philo->last_eat + philo->state->time_to_die;
-	if (print(philo, "is eating 🍔"))
-		return (1);
 	usleep(philo->state->time_to_eat * 1000);
 	philo->eat_count++;
 	philo->eating = 0;
