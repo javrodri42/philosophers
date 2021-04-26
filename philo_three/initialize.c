@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 10:36:26 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/20 14:08:00 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/26 14:06:19 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	initialize(int argc, char **argv, t_state *state)
 	state->forks_mutex = NULL;
 	state->philos
 		= (t_philo *)malloc(sizeof(*(state->philos)) * state->amount);
-	printf("Aqui\n");
 	if (!(state->philos))
 		return (1);
 	if (initialize_philos(state))

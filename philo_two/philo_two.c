@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 10:04:07 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/20 12:55:58 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/26 13:54:20 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,20 @@ int	print(t_philo *philo, char *message)
 {
 	static int	done = 0;
 	int			ret;
+	uint64_t	time;
 
 	if (sem_wait(philo->state->write_mutex) != 0)
 		return (1);
 	ret = 1;
 	if (!done)
 	{
-		printf("%llu\t%i %s\n", gettime() - philo->state->start,
-			philo->position + 1, message);
+		time = gettime();
+		ft_putnbr(time - philo->state->start);
+		write(1, "\t", 1);
+		ft_putnbr(philo->position + 1);
+		write(1, " ", 1);
+		write(1, message, ft_strlen(message));
+		write (1, "\n", 1);
 		if (ft_strncmp(message, "has died", ft_strlen("has died")) == 0)
 			done = 1;
 		ret = 0;

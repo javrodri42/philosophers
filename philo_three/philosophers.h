@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:51 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/20 14:06:56 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/26 13:47:23 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,7 @@ char		*semaphore_name(char const *src, char *dst, int pos);
 sem_t		*open_semaphore(char const *name, int value);
 int			processes(t_state *state, int i);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
+void		ft_putchar(char c);
+void		ft_putnbr(int n);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:51 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/07 11:14:00 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/26 11:52:02 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,7 @@ void		take_forks(t_philo *philo);
 void		leave_forks(t_philo *philo);
 void		eat(t_philo *philo);
 int			printing(t_philo *philo, char *str, int n);
+void		ft_putchar(char c);
+void		ft_putnbr(int n);
 
 #endif
