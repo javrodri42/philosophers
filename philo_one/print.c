@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 13:01:13 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/26 11:54:50 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/07/01 13:25:28 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ int	printing(t_philo *philo, char *str, int n)
 
 	pthread_mutex_lock(&philo->state->write_mutex);
 	time = gettime();
-	/*printf("%llu\t%i %s\n", gettime() - philo->state->start,
-		philo->position + 1, str);*/
 	ft_putnbr(time - philo->state->start);
 	write(1, "\t", 1);
 	ft_putnbr(philo->position + 1);

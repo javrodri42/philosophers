@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 12:45:05 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/07 12:20:12 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/07/01 13:25:14 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	parse_arguments(int argc, char **argv, t_state *state)
 {
 	if (argc < 5 || argc > 6)
 	{
-		printf("Error: bad arguments\n");
+		write(1, "Error: bad arguments\n", ft_strlen("Error: bad arguments\n"));
 		return (0);
 	}
 	state->amount = ft_atoi(argv[1]);
@@ -72,9 +72,9 @@ int	main(int argc, char **argv)
 	t_state	state;
 
 	if (parse_arguments(argc, argv, &state))
-		error("error: fatal\n", &state);
+		return (error("error: fatal\n", &state));
 	if (initialize_threads(&state))
-		error("error: fatal\n", &state);
+		return (error("error: fatal\n", &state));
 	pthread_mutex_lock(&state.somebody_dead_mutex);
 	pthread_mutex_unlock(&state.somebody_dead_mutex);
 	free_state(&state);
