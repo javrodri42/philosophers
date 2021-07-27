@@ -6,19 +6,19 @@
 #    By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/23 10:31:51 by javrodri          #+#    #+#              #
-#    Updated: 2021/04/26 13:41:46 by javrodri         ###   ########.fr        #
+#    Updated: 2021/07/05 12:17:23 by javrodri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME	=	philo_two	
+NAME	=	philo	
 
-SRCS	=	philo_two.c \
+SRCS	=	philo.c \
 			utils.c		\
 			utils2.c	\
 			initialize.c\
+			print.c		\
 			routine.c	\
-			routine2.c	\
-			semaphore.c
+			routine2.c	
 
 
 OBJS	=	$(SRCS:.c=.o)

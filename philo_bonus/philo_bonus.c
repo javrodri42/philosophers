@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_two.c                                        :+:      :+:    :+:   */
+/*   philo_three.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 10:04:07 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/26 13:54:20 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/07/05 12:07:44 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,14 @@ int	print(t_philo *philo, char *message)
 {
 	static int	done = 0;
 	int			ret;
-	uint64_t	time;
 
 	if (sem_wait(philo->state->write_mutex) != 0)
 		return (1);
 	ret = 1;
 	if (!done)
 	{
-		time = gettime();
-		ft_putnbr(time - philo->state->start);
-		write(1, "\t", 1);
-		ft_putnbr(philo->position + 1);
-		write(1, " ", 1);
-		write(1, message, ft_strlen(message));
-		write (1, "\n", 1);
+		printf("%llu\t%i %s\n", gettime() - philo->state->start,
+			philo->position + 1, message);
 		if (ft_strncmp(message, "has died", ft_strlen("has died")) == 0)
 			done = 1;
 		ret = 0;
@@ -72,6 +66,7 @@ int	free_state(t_state *state)
 int	main(int argc, char **argv)
 {
 	t_state	state;
+	int		i;
 
 	if (argc < 5 || argc > 6)
 		return (error("ERROR: BAD ARGUMENTS", &state));
@@ -80,6 +75,9 @@ int	main(int argc, char **argv)
 	if (initialize_threads (&state))
 		return (error("ERROR: FATAL", &state));
 	sem_wait(state.somebody_dead_mutex);
+	i = 0;
+	while (i < state.amount)
+		kill(state.philos[i++].pid, SIGKILL);
 	free_state(&state);
 	return (0);
 }

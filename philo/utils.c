@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 11:13:17 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/20 12:59:37 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/07/05 12:55:59 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,11 @@ int	ft_atoi(const char *str)
 	{
 		if (!is_negative && nb > (unsigned int)MAX_INT)
 			return (-1);
-		else if (nb > (unsigned int)MIN_INT)
+		if (nb > (unsigned int)MIN_INT)
 			return (0);
 		nb = nb * 10 + (*str - 48);
 		++str;
 	}
-	if ((int)is_negative)
-		return (-nb);
 	return (nb);
 }
 
@@ -65,28 +63,10 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-int	ft_strcpy(char *dst, const char *src)
+uint64_t	gettime(void)
 {
-	int	i;
+	static struct timeval	tv;
 
-	i = 0;
-	while (src[i])
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = 0;
-	return (i);
-}
-
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
-{
-	size_t	i;
-
-	if (n == 0)
-		return (0);
-	i = 0;
-	while (s1[i] && s2[i] && s1[i] == s2[i] && i < n - 1)
-		++i;
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * (uint64_t)1000) + (tv.tv_usec / 1000));
 }

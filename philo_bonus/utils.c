@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 11:13:17 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/20 12:59:37 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/07/05 12:58:31 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,11 @@ int	ft_atoi(const char *str)
 	{
 		if (!is_negative && nb > (unsigned int)MAX_INT)
 			return (-1);
-		else if (nb > (unsigned int)MIN_INT)
+		if (nb > (unsigned int)MIN_INT)
 			return (0);
 		nb = nb * 10 + (*str - 48);
 		++str;
 	}
-	if ((int)is_negative)
-		return (-nb);
 	return (nb);
 }
 
