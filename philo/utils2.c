@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print.c                                            :+:      :+:    :+:   */
+/*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/06 13:01:13 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/22 11:23:57 by javrodri         ###   ########.fr       */
+/*   Created: 2021/04/26 11:45:22 by javrodri          #+#    #+#             */
+/*   Updated: 2021/04/26 11:54:09 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	printing(t_philo *philo, char *str, int n)
+void	ft_putchar(char c)
 {
-	pthread_mutex_lock(&philo->state->write_mutex);
-	printf("%llu\t%i %s", gettime() - philo->state->start,
-		philo->position + 1, str);
-	if (n == 1)
-		return (0);
-	if (pthread_mutex_unlock(&philo->state->write_mutex))
-		return (1);
-	return (0);
+	write(1, &c, 1);
+}
+
+void	ft_putnbr(int n)
+{
+	if (n >= 10)
+	{
+		ft_putnbr(n / 10);
+		ft_putnbr(n % 10);
+	}
+	else
+	{
+		ft_putchar(n + '0');
+	}
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_two.c                                        :+:      :+:    :+:   */
+/*   philo_three.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 10:04:07 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/20 12:55:58 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/07/05 12:07:44 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int	free_state(t_state *state)
 int	main(int argc, char **argv)
 {
 	t_state	state;
+	int		i;
 
 	if (argc < 5 || argc > 6)
 		return (error("ERROR: BAD ARGUMENTS", &state));
@@ -74,6 +75,9 @@ int	main(int argc, char **argv)
 	if (initialize_threads (&state))
 		return (error("ERROR: FATAL", &state));
 	sem_wait(state.somebody_dead_mutex);
+	i = 0;
+	while (i < state.amount)
+		kill(state.philos[i++].pid, SIGKILL);
 	free_state(&state);
 	return (0);
 }

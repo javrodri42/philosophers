@@ -6,7 +6,7 @@
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:51 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/07 11:14:00 by javrodri         ###   ########.fr       */
+/*   Updated: 2021/04/26 13:47:23 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,24 @@
 # include <sys/time.h>
 # include <stdio.h>
 # include <stdint.h>
+# include <semaphore.h>
+# include <sys/stat.h>
+# include <fcntl.h>
+# include <signal.h>
 
 typedef struct s_philo
 {
+	pid_t			pid;
 	int				position;
 	int				eating;
 	uint64_t		limit;
 	uint64_t		last_eat;
-	pthread_mutex_t	mutex;
-	pthread_mutex_t	eat_mutex;
 	int				left_fork;
 	int				right_fork;
-	int				eat_count;
 	struct s_state	*state;
+	int				eat_count;
+	sem_t			*mutex;
+	sem_t			*eat_count_mutex;
 }		t_philo;
 
 typedef struct s_state
@@ -41,29 +46,37 @@ typedef struct s_state
 	uint64_t		time_to_eat;
 	uint64_t		time_to_sleep;
 	int				must_eat_count;
-	t_philo			*philos;
+	int				total_eat_count;
 	uint64_t		start;
-	pthread_mutex_t	*forks_mutex;
-	pthread_mutex_t	write_mutex;
-	pthread_mutex_t	somebody_dead_mutex;
+	t_philo			*philos;
+	sem_t			*forks_mutex;
+	sem_t			*write_mutex;
+	sem_t			*somebody_dead_mutex;
 }					t_state;
 
 int			main(int argc, char **argv);
 int			error(char *error, t_state *state);
 int			ft_strlen(char *str);
 int			ft_atoi(const char *str);
-int			parse_arguments(int argc, char **argv, t_state *state);
-void		philos_initialize(t_state *state);
+int			initialize(int argc, char **argv, t_state *state);
+int			initialize_philos(t_state *state);
 int			free_state(t_state *state);
 int			initialize_threads(t_state *state);
 uint64_t	gettime(void);
 void		*dead_monitor(void *arg_philo);
 void		*routine(void *arg_philo);
 void		*count_monitor(void *arg_state);
-int			initialize_mutex(t_state *state);
-void		take_forks(t_philo *philo);
-void		leave_forks(t_philo *philo);
-void		eat(t_philo *philo);
-int			printing(t_philo *philo, char *str, int n);
+int			initialize_semaphores(t_state *state);
+int			leave_forks(t_philo *philo);
+int			take_forks(t_philo *philo);
+int			eat(t_philo *philo);
+int			print(t_philo *philo, char *message);
+int			ft_strcpy(char *dst, const char *src);
+char		*semaphore_name(char const *src, char *dst, int pos);
+sem_t		*open_semaphore(char const *name, int value);
+int			processes(t_state *state, int i);
+int			ft_strncmp(const char *s1, const char *s2, size_t n);
+void		ft_putchar(char c);
+void		ft_putnbr(int n);
 
 #endif

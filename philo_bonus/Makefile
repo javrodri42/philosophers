@@ -6,13 +6,13 @@
 #    By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/23 10:31:51 by javrodri          #+#    #+#              #
-#    Updated: 2021/04/22 11:53:55 by javrodri         ###   ########.fr        #
+#    Updated: 2021/07/05 12:08:03 by javrodri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME	=	philo_three	
+NAME	=	philo_bonus	
 
-SRCS	=	philo_three.c \
+SRCS	=	philo_bonus.c \
 			utils.c		\
 			initialize.c\
 			routine.c	\

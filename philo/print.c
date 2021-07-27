@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   semaphore.c                                        :+:      :+:    :+:   */
+/*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: javrodri <javrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/19 13:05:24 by javrodri          #+#    #+#             */
-/*   Updated: 2021/04/20 12:58:19 by javrodri         ###   ########.fr       */
+/*   Created: 2021/04/06 13:01:13 by javrodri          #+#    #+#             */
+/*   Updated: 2021/07/01 13:25:28 by javrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-sem_t	*open_semaphore(char const *name, int value)
+int	printing(t_philo *philo, char *str, int n)
 {
-	sem_unlink(name);
-	return (sem_open(name, O_CREAT | O_EXCL, 0644, value));
-}
+	uint64_t	time;
 
-char	*semaphore_name(char const *src, char *dst, int pos)
-{
-	int	i;
-
-	i = ft_strcpy(dst, src);
-	while (pos > 0)
-	{
-		dst[i++] = (pos % 10) + '0';
-		pos /= 10;
-	}
-	dst[i] = 0;
-	return (dst);
+	pthread_mutex_lock(&philo->state->write_mutex);
+	time = gettime();
+	ft_putnbr(time - philo->state->start);
+	write(1, "\t", 1);
+	ft_putnbr(philo->position + 1);
+	write(1, " ", 1);
+	write(1, str, ft_strlen(str));
+	write (1, "\n", 1);
+	if (n == 1)
+		return (0);
+	if (pthread_mutex_unlock(&philo->state->write_mutex))
+		return (1);
+	return (0);
 }
