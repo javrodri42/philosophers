@@ -42,6 +42,16 @@ __philosopher with thread and mutex__
 * To avoid philosophers duplicating forks, you should protect the forks state with a mutex for each of them.
 * Each philosopher should be a thread.
 
+### Bonus
+
+Philosopher with processes and semaphore
+
+In this version the specific rules are:
+* All the forks are in the middle of the table.
+* They have no states in memory but the number of available forks is represented by
+a semaphore.
+* Each philosopher should be a process and the main process should not be a philosopher.
+
 ## Ressources
 
 * [Parallel Computing](https://computing.llnl.gov/tutorials/parallel_comp/)
